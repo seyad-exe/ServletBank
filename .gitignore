@@ -1,0 +1,12 @@
+# Maven target folder (compiled code)
+target/
+
+# Eclipse specific files
+.settings/
+.project
+.classpath
+.metadata/
+
+# OS generated files
+.DS_Store
+Thumbs.db
