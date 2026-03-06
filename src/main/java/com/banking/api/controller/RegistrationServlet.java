@@ -34,5 +34,14 @@ public class RegistrationServlet  extends HttpServlet{
 		}
 		
 		boolean isRegistered = userService.registerUser(username,password); //going to write this method now
+		
+		if (isRegistered) {
+			resp.setStatus(HttpServletResponse.SC_CREATED); // value is 201, meaning its is created
+			resp.getWriter().println("user registered");
+		}
+		else {
+			resp.setStatus(HttpServletResponse.SC_CONFLICT); //409 , so there could be a conflict and the user already exists
+			resp.getWriter().println("registration failed, user may already exist");
+		}
 	}
 }
