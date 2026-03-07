@@ -16,7 +16,7 @@ public class UserRepository {
     
     private Connection getConnection() throws SQLException{
     	try {
-    		Class.forName("com.mysql.cj.jdbc.Driver")
+    		Class.forName("com.mysql.cj.jdbc.Driver");
     	} catch (ClassNotFoundException e) {
     		e.printStackTrace();
     	}
@@ -29,9 +29,32 @@ public class UserRepository {
     	try(Connection conn = getConnection();
     		PreparedStatement stmt =  conn.prepareStatement(sql)){
     		
-    		stmt.setString(1, sql);
-    		stmt.setString(1, sql);
-    		stmt.setString(1, sql);
+    		stmt.setString(1, user.getusername());
+    		stmt.setString(2, user.getpasswordhash());
+    		stmt.setString(3, user.getrole());
+    		
+    		int rowsaffected = stmt.executeUpdate();
+    		return rowsaffected > 0;
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    		return false;
     	}
     }
+    
+    public User findByUsername(String username) {
+    	String sql = "select * from users where username = ?";
+    	
+    	try (Connection conn = getConnection();
+    		PreparedStatement stmt = conn.prepareStatement(sql)){
+    		stmt.setString(1, username);
+    		
+    		ResultSet rs = stmt.executeQuery();
+    		
+    		
+    		
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
 }
