@@ -7,6 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class UserService {
 	//userrepository is needed for the service to work
+	//repo layer added
 	private UserRepository userRepository;
 	
 	public UserService() {

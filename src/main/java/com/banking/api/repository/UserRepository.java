@@ -50,11 +50,20 @@ public class UserRepository {
     		
     		ResultSet rs = stmt.executeQuery();
     		
+    		if(rs.next()) {
+    			User user = new User();
+    			user.setid(rs.getInt("id"));
+    			user.setusername(rs.getString("username"));
+    			user.setpasswordhash(rs.getString("password_hash"));
+    			user.setrole(rs.getString("role"));
+    			return user;
+    		}
     		
     		
     	} catch (SQLException e) {
     		e.printStackTrace();
     	}
+    	return null;
     }
     
 }
