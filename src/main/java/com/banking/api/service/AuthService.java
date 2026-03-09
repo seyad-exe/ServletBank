@@ -20,8 +20,8 @@ public class AuthService {
 		if(user == null) {
 			return null;
 		}
-		
-		if( hashedPassword == user.getpasswordhash() ) {
+		//used bcrypt method instead of just using == because .hashpw created a new hashed pwd everytime, so comparison not possible
+		if(BCrypt.checkpw(plainTextPassword, user.getpasswordhash()) ) {
 			return user;
 		}
 		return null;
