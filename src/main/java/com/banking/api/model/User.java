@@ -9,8 +9,8 @@ public class User {
 	
 	public User() {}
 	
-	public User(int id, String username, String passwordhash, String role) {
-		this.id = id;
+	public User(String username, String passwordhash, String role) {
+		
 		this.username = username;
 		this.passwordhash =passwordhash ;
 		this.role=role;

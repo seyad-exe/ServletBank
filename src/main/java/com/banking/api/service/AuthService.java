@@ -15,7 +15,7 @@ public class AuthService {
 	
 	public User authenticate(String username, String plainTextPassword) {
 		User user = userrepository.findByUsername(username);
-		String hashedPassword = BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
+		//String hashedPassword = BCrypt.hashpw(plainTextPassword, BCrypt.gensalt());
 		
 		if(user == null) {
 			return null;
