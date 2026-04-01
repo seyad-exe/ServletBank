@@ -1,6 +1,7 @@
 package com.banking.api.repository;
 
 import com.banking.api.model.User;
+import com.banking.api.util.PropertiesUtil;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,9 +11,9 @@ import java.sql.SQLException;
 
 public class UserRepository {
 	
-	private static final String url = "jdbc:mysql://localhost:3306/bank_db";
-    private static final String db_user = "root"; 
-    private static final String db_pswd = "";
+	private static final String url = PropertiesUtil.getProperty("db.url");
+    private static final String db_user = PropertiesUtil.getProperty("db.username"); 
+    private static final String db_pswd = PropertiesUtil.getProperty("db.password");
     
     private Connection getConnection() throws SQLException{
     	try {
@@ -24,7 +25,7 @@ public class UserRepository {
     }
     
     public boolean save(User user) {
-    	String sql = "insert into users (username,passwordhash, role) VALUES (?,?,?)";
+    	String sql = "insert into users (username,password_hash, role) VALUES (?,?,?)";
     	
     	try(Connection conn = getConnection();
     		PreparedStatement stmt =  conn.prepareStatement(sql)){

@@ -25,7 +25,7 @@ public class RegistrationServlet  extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException{
 		String username= req.getParameter("username"); 
-		String password= req.getParameter("pasword");
+		String password= req.getParameter("password");
 		//making sure both fields are not empty
 		if(username == null||username.trim().isEmpty() || password==null|| password.trim().isEmpty()) {
 			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST); //first i used just 400 by default, but this is better practice
