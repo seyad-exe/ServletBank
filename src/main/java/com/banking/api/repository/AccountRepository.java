@@ -23,12 +23,12 @@ public class AccountRepository {
     	return DriverManager.getConnection(url,db_user,db_pswd);
     }
     
-    public Account findAccountByUsername(String username) {
-    	String sql = "select a.* from accounts a JOIN users u ON a.user_id = u.id WHERE u.username= ? ";
+    public Account findAccountByUsername(String accountNumber,String username) {
+    	String sql = "select a.* from accounts a JOIN users u ON a.user_id = u.id WHERE a.account_number = ? AND u.username= ? ";
     	try (Connection conn = getConnection();
         		PreparedStatement stmt = conn.prepareStatement(sql)){
-        		stmt.setString(1, username);
-        		
+        		stmt.setString(1, accountNumber);
+        		stmt.setString(2, username);
         		ResultSet rs = stmt.executeQuery();
         		if(rs.next()) {
         			Account acc = new Account();
@@ -43,6 +43,20 @@ public class AccountRepository {
     	}
     	return null;
     }
+    
+    public boolean createAccount(int userId, String accountNumber){
+    	String sql = "Insert into accounts (user_id, account_number , balance) values (?,?,0.00)";
+    	try(Connection conn = getConnection();
+    			PreparedStatement stmt = conn.prepareStatement(sql)){
+    		stmt.setInt(1, userId);
+    		stmt.setString(2, accountNumber);
+    		return stmt.executeUpdate() > 0;
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    		return false;
+    	}
+    }
+    
     public boolean performTransaction(int accountId, String type, double amount) {
     	Connection conn = null;
     	try {

@@ -29,6 +29,7 @@ public class TransactionServlet extends HttpServlet {
 		}
 		
 		String username = (String) session.getAttribute("username");
+		String accountNumber = req.getParameter("accountNumber");
 		String type = req.getParameter("type");
 		double amount;
 		try {
@@ -38,11 +39,11 @@ public class TransactionServlet extends HttpServlet {
 			resp.getWriter().println("invalid amount format");
 			return;
 		}
-		String resultMsg = accService.processTransaction(username, type.toUpperCase(), amount);
+		String resultMsg = accService.processTransaction(username, accountNumber, type.toUpperCase(), amount);
 		
-		if(resultMsg.equals("transaction completed successfully")) {
+		if(resultMsg.equals("success")) {
 			resp.setStatus(200);
-			resp.getWriter().println("Successfully processed " + type + " of $" + amount);
+			resp.getWriter().println("Successfully processed " + type + " of $ " + amount);
 		}else {
 			resp.setStatus(400);
 			resp.getWriter().println("transaction failed: " + resultMsg);

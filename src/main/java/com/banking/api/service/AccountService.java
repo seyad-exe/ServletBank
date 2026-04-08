@@ -1,17 +1,31 @@
 package com.banking.api.service;
 
 import com.banking.api.model.Account;
+import com.banking.api.model.User;
 import com.banking.api.repository.AccountRepository;
+import com.banking.api.repository.UserRepository;
 
 public class AccountService {
 
 	private AccountRepository accountRepo;
+	private UserRepository userRepo;
 	
 	public AccountService() {
 		this.accountRepo = new AccountRepository();
+		this.userRepo = new UserRepository();
 	}
 	
-	public String processTransaction(String username, String type, double amount) {
+	public String createNewAccount(String username) {
+		User user = userRepo.findByUsername(username);
+		if (user == null) return null;
+		//using the current time so i can get randomized account numbers 
+		String accountNumber = "ACCT-" + System.currentTimeMillis();
+		
+		boolean success = accountRepo.createAccount(user.getid(), accountNumber);
+		return success ? accountNumber : null;
+	}
+	
+	public String processTransaction(String username, String accountNumber, String type, double amount) {
 		if(amount <= 0) {
 			return "Amount must be larger than 0";
 		}
@@ -20,7 +34,7 @@ public class AccountService {
 			return "Invalid transaction type";
 		}
 		//gets the account from db 
-		Account account = accountRepo.findAccountByUsername(username);
+		Account account = accountRepo.findAccountByUsername(accountNumber, username);
 		if(account == null) {
 			return "account not found";
 		}
@@ -32,7 +46,7 @@ public class AccountService {
 		boolean success = accountRepo.performTransaction(account.getId(), type, amount);
 		
 		if(success) {
-			return "transaction completed successfully";
+			return "success";
 		}else {
 			return "transaction failed";
 		}
