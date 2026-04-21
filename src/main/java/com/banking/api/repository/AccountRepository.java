@@ -24,7 +24,41 @@ public class AccountRepository {
     	}
     	return DriverManager.getConnection(url,db_user,db_pswd);
     }
+    //method for admin, lists all the accounts which user has them and balance
+    public List<String> findAllAccountsWithUsernames(){
+    	List<String> accountList = new ArrayList<>();
+    	String sql = "select u.username, a.account_number, a.balance FROM accounts a Join users u ON a.user_id = u.id ORDER by u.username ASC";
+    	try (Connection conn = getConnection();
+        		PreparedStatement stmt = conn.prepareStatement(sql)){
+    			ResultSet rs = stmt.executeQuery();
+    			while(rs.next()) {
+    				String record = String.format("User: %s | Account: %s | Balance: $%.2f" ,
+    						rs.getString("username"),
+    						rs.getString("account_number"),
+    						rs.getDouble("balance"));
+    				accountList.add(record);
+    			}
+    	}catch (SQLException e) { e.printStackTrace(); }
+    	return accountList;
+    }
+    //find all accounts belonging to one specific user
+    public List<String> findAllByUsername(String username){
+    	List<String> userAccounts = new ArrayList<>();
+    	String sql = "select a.account_number, a.balance from accounts a JOIN users u ON a.user_id = u.id WHERE u.username= ?";
+    	try (Connection conn = getConnection();
+        		PreparedStatement stmt = conn.prepareStatement(sql)){
+    		stmt.setString(1,username);
+    		ResultSet rs = stmt.executeQuery();
+    		while(rs.next()) {
+    			userAccounts.add(String.format("Account: %s | Balance: $%.2f",
+    					rs.getString("account_number"),
+						rs.getDouble("balance")));
+    		}
+    	}catch (SQLException e) { e.printStackTrace(); }
+    	return userAccounts;
+    }
     
+    //finds specific account for that username
     public Account findAccountByUsername(String accountNumber,String username) {
     	String sql = "select a.* from accounts a JOIN users u ON a.user_id = u.id WHERE a.account_number = ? AND u.username= ? ";
     	try (Connection conn = getConnection();
@@ -45,7 +79,7 @@ public class AccountRepository {
     	}
     	return null;
     }
-    
+    //account creation
     public boolean createAccount(int userId, String accountNumber){
     	String sql = "Insert into accounts (user_id, account_number , balance) values (?,?,0.00)";
     	try(Connection conn = getConnection();

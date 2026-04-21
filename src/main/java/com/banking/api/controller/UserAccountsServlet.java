@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/admin/dashboard")
-public class AdminDashboardServlet extends HttpServlet {
+@WebServlet("/api/accounts")
+public class UserAccountsServlet extends HttpServlet {
 	
 	private AccountService accService;
 	
@@ -22,22 +22,20 @@ public class AdminDashboardServlet extends HttpServlet {
 	}
 	
 	@Override
-	protected void doGet(HttpServletRequest req , HttpServletResponse resp) throws ServletException , IOException {
+	public void doGet(HttpServletRequest req , HttpServletResponse resp) throws ServletException , IOException {
+		
+		HttpSession session = req.getSession(false);
+		String username = (String) session.getAttribute("username");
+		
+		List<String> accounts = accService.getUserAccounts(username);
 		
 		resp.setContentType("text/plain");
 		PrintWriter out = resp.getWriter();
+		out.println("Your Account details:");
 		
-		out.println("ADMIN DASHBOARD");
-		out.println("________________");
-		
-		List<String> accounts = accService.getAllAccountsForAdmin();
-		
-		if(accounts.isEmpty()) {
-			out.println("accounts not found in database");
-		}else {
-			for (String acc : accounts) {
-				out.println(acc);
-			}
+		for(String acc : accounts) {
+			out.println(acc);
 		}
 	}
+
 }

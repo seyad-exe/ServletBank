@@ -4,6 +4,8 @@ import com.banking.api.model.Account;
 import com.banking.api.model.User;
 import com.banking.api.repository.AccountRepository;
 import com.banking.api.repository.UserRepository;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccountService {
 
@@ -23,6 +25,15 @@ public class AccountService {
 		
 		boolean success = accountRepo.createAccount(user.getid(), accountNumber);
 		return success ? accountNumber : null;
+	}
+	//calls the method for admin
+	public List<String> getAllAccountsForAdmin() {
+	    return accountRepo.findAllAccountsWithUsernames();
+	}
+	
+	// account specific details for user
+	public List<String> getUserAccounts(String username) {
+	    return accountRepo.findAllByUsername(username);
 	}
 	
 	public String processTransaction(String username, String accountNumber, String type, double amount) {
