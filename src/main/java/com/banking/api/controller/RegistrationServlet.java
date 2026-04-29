@@ -32,6 +32,21 @@ public class RegistrationServlet  extends HttpServlet{
 			resp.getWriter().println("enter both username and password");
 			return;
 		}
+		//going to add regex logic here soon
+		String usernameRegex = "^[a-zA-Z0-9_]{5,20}$";
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,}$";
+		
+        if (!username.matches(usernameRegex)) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().println("Invalid username: Must be 5-20 characters and contain only letters, numbers, or underscores.");
+            return;
+        }
+        
+        if (!password.matches(passwordRegex)) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().println("Weak password: Must be at least 8 characters, include an uppercase, a lowercase, a number, and a special character.");
+            return;
+        }
 		
 		boolean isRegistered = userService.registerUser(username,password); //going to write this method now
 		

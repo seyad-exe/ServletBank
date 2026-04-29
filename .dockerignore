@@ -1,0 +1,6 @@
+.git
+.settings
+.project
+.classpath
+src/
+pom.xml

@@ -30,6 +30,11 @@ public class TransactionServlet extends HttpServlet {
 		
 		String username = (String) session.getAttribute("username");
 		String accountNumber = req.getParameter("accountNumber");
+		if (accountNumber == null || !accountNumber.matches("^ACCT-\\d{13}$")) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().println("Invalid account format. Must be ACCT- followed by 13 digits.");
+            return;
+        }
 		String type = req.getParameter("type");
 		double amount;
 		try {

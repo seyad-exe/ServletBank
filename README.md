@@ -1,6 +1,6 @@
 # Java Servlet Banking API
 
-A robust, enterprise-grade banking API built entirely from scratch using raw Java Servlets. This project demonstrates a deep understanding of backend fundamentals, layered architecture, state management, and database connection pooling without relying on heavy frameworks like Spring Boot.
+A simple banking API built entirely from scratch using raw Java Servlets. The project contains user and admin role, where users can make credit and debit transactions to accounts they own. Apart from this, they can view their transaction history. This project does not rely on heavy frameworks like Spring Boot.
 
 ##  Features
 * **Custom Security:** Password hashing via BCrypt and stateful authentication using Server-Side Sessions.
