@@ -75,6 +75,59 @@ sequenceDiagram
 
 ---
 
+### Entity Relationship (One to Many)
+
+```mermaid
+erDiagram
+    USERS ||--o{ ACCOUNTS : "owns"
+    ACCOUNTS ||--o{ TRANSACTIONS : "logs"
+
+    USERS {
+        int id PK
+        varchar username
+        varchar password_hash
+        varchar role
+        timestamp created_at
+    }
+    
+    ACCOUNTS {
+        int id PK
+        int user_id FK
+        varchar account_number
+        decimal balance
+    }
+    
+    TRANSACTIONS {
+        int id PK
+        int account_id FK
+        enum transaction_type
+        decimal amount
+        timestamp transaction_date
+    }
+```
+
+### API Endpoints Summary
+
+**Endpoint URL:** [Localhost Postman API Endpoints](http://localhost:8080/YourProjectName)
+
+| S.No | Endpoint | Method | Inputs Needed | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | `/health` | `GET` | `null` | Checks if the server is up and running. |
+| 2 | `/register` | `POST` | `username`, `password` | Registers a new user, hashes password, and assigns default 'USER' role. |
+| 3 | `/login` | `POST` | `username`, `password` | Authenticates user credentials and generates a secure session. |
+| 4 | `/api/accounts/create` | `POST` | `null` | Generates a new unique account number for the logged-in user with a $0.00 balance. |
+| 5 | `/api/transaction` | `POST` | `accountNumber`, `type`, `amount` | Debits or credits money after verifying account ownership and sufficient funds. |
+| 6 | `/api/accounts` | `GET` | `null` | Retrieves a list of all accounts and their current balances for the user. |
+| 7 | `/api/transactions` | `GET` | `page`, `size` *(query)* | Gives a paginated list of all transactions made by the logged-in user. |
+| 8 | `/admin/dashboard` | `GET` | `null` | Gives the list of all accounts and system balances (Admin access only). |
+
+---
+
+**Credentials in `application.properties`**
+* `db.url` = Your database url (e.g., `jdbc:mysql://localhost:3306/bank_db`).
+* `db.username` = Your database username (e.g., `root`).
+* `db.password` = Your database password.
+
 ##  Local Setup Instructions
 
 1. **Clone the repository:**
