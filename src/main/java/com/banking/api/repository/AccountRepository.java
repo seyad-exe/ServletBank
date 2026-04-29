@@ -2,6 +2,7 @@ package com.banking.api.repository;
 
 import com.banking.api.model.Account;
 import com.banking.api.util.PropertiesUtil;
+import com.banking.api.util.DataSourceUtil;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,23 +13,11 @@ import java.util.List;
 
 public class AccountRepository {
 
-	private static final String url = PropertiesUtil.getProperty("db.url");
-    private static final String db_user = PropertiesUtil.getProperty("db.username"); 
-    private static final String db_pswd = PropertiesUtil.getProperty("db.password");
-    
-    private Connection getConnection() throws SQLException{
-    	try {
-    		Class.forName("com.mysql.cj.jdbc.Driver");
-    	} catch (ClassNotFoundException e) {
-    		e.printStackTrace();
-    	}
-    	return DriverManager.getConnection(url,db_user,db_pswd);
-    }
     //method for admin, lists all the accounts which user has them and balance
     public List<String> findAllAccountsWithUsernames(){
     	List<String> accountList = new ArrayList<>();
     	String sql = "select u.username, a.account_number, a.balance FROM accounts a Join users u ON a.user_id = u.id ORDER by u.username ASC";
-    	try (Connection conn = getConnection();
+    	try (Connection conn = DataSourceUtil.getConnection();
         		PreparedStatement stmt = conn.prepareStatement(sql)){
     			ResultSet rs = stmt.executeQuery();
     			while(rs.next()) {
@@ -45,7 +34,7 @@ public class AccountRepository {
     public List<String> findAllByUsername(String username){
     	List<String> userAccounts = new ArrayList<>();
     	String sql = "select a.account_number, a.balance from accounts a JOIN users u ON a.user_id = u.id WHERE u.username= ?";
-    	try (Connection conn = getConnection();
+    	try (Connection conn = DataSourceUtil.getConnection();
         		PreparedStatement stmt = conn.prepareStatement(sql)){
     		stmt.setString(1,username);
     		ResultSet rs = stmt.executeQuery();
@@ -61,7 +50,7 @@ public class AccountRepository {
     //finds specific account for that username
     public Account findAccountByUsername(String accountNumber,String username) {
     	String sql = "select a.* from accounts a JOIN users u ON a.user_id = u.id WHERE a.account_number = ? AND u.username= ? ";
-    	try (Connection conn = getConnection();
+    	try (Connection conn = DataSourceUtil.getConnection();
         		PreparedStatement stmt = conn.prepareStatement(sql)){
         		stmt.setString(1, accountNumber);
         		stmt.setString(2, username);
@@ -82,7 +71,7 @@ public class AccountRepository {
     //account creation
     public boolean createAccount(int userId, String accountNumber){
     	String sql = "Insert into accounts (user_id, account_number , balance) values (?,?,0.00)";
-    	try(Connection conn = getConnection();
+    	try(Connection conn = DataSourceUtil.getConnection();
     			PreparedStatement stmt = conn.prepareStatement(sql)){
     		stmt.setInt(1, userId);
     		stmt.setString(2, accountNumber);
@@ -96,7 +85,7 @@ public class AccountRepository {
     public boolean performTransaction(int accountId, String type, double amount) {
     	Connection conn = null;
     	try {
-    		conn = getConnection();
+    		conn = DataSourceUtil.getConnection();
     		conn.setAutoCommit(false);
     		String updateSQL;
     		if(type.equals("CREDIT")) {

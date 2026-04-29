@@ -50,7 +50,7 @@ public class TransactionHistoryServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         out.println("Transaction History (Page " + page + "):");
-        out.println("--------------------------------------------------");
+        out.println("-------------------------------------------------");
         
         if (history.isEmpty()) {
             out.println("No transactions found.");
