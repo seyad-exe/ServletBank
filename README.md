@@ -38,7 +38,7 @@ flowchart TD
 
 ---
 
-##Sequence Diagram: Secure Transaction Flow
+## Sequence Diagram: Secure Transaction Flow
 
 Here is how the system safely processes a debit/credit request, ensuring Atomicity.
 
