@@ -2,14 +2,14 @@
 
 A robust, enterprise-grade banking API built entirely from scratch using raw Java Servlets. This project demonstrates a deep understanding of backend fundamentals, layered architecture, state management, and database connection pooling without relying on heavy frameworks like Spring Boot.
 
-## 🚀 Features
+## Features
 * **Custom Security:** Password hashing via BCrypt and stateful authentication using Server-Side Sessions.
 * **Role-Based Access Control (RBAC):** Servlet Filters dynamically guard endpoints based on 'USER' or 'ADMIN' roles.
 * **ACID Transactions:** Manual JDBC transaction management (`commit`/`rollback`) ensuring zero data loss during account transfers.
 * **Optimized Database:** Centralized connection pooling via HikariCP.
 * **Automated Migrations:** Database schema version control powered by Liquibase.
 
-## 🛠️ Technology Stack
+## Technology Stack
 * **Language:** Java 21
 * **Server:** Apache Tomcat 10 (Jakarta EE 10)
 * **Database:** MySQL 8.0
@@ -18,7 +18,7 @@ A robust, enterprise-grade banking API built entirely from scratch using raw Jav
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 The application strictly follows a 3-Tier Layered Architecture to separate HTTP traffic, business rules, and database execution.
 
@@ -38,7 +38,7 @@ flowchart TD
 
 ---
 
-## 🔄 Sequence Diagram: Secure Transaction Flow
+##Sequence Diagram: Secure Transaction Flow
 
 Here is how the system safely processes a debit/credit request, ensuring Atomicity.
 
@@ -75,7 +75,7 @@ sequenceDiagram
 
 ---
 
-## ⚙️ Local Setup Instructions
+## Local Setup Instructions
 
 1. **Clone the repository:**
    ```bash
