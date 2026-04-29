@@ -79,7 +79,7 @@ sequenceDiagram
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/servlet-banking-api.git
+   git clone https://github.com/seyad-exe/ServletBank.git
    ```
 2. **Configure the Database:**
    * Create a MySQL database named `bank_db`.
